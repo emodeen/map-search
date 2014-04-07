@@ -9,5 +9,5 @@ package com.emodeen;
  */
 enum CharType {
 
-	DOT, CAPITAL_X
+	DOT, CAPITAL_X, AMPERSAND
 }

@@ -11,7 +11,7 @@ import java.util.*;
  */
 public class Row {
 
-	private List<Character> chars;
+	private List<Point> points;
 	private int rowNum;
 	private String strRow;
 	
@@ -22,13 +22,13 @@ public class Row {
 	 */
 	Row(int rowNum, String strRow) {
 		
-		Character c = null;
+		Point p = null;
 		CharType type = null;
 		
 		this.rowNum = rowNum;
 		this.strRow = strRow;
 		
-		chars = new ArrayList<Character>();
+		points = new ArrayList<Point>();
 		
 		// Store the characters in the chars List.
 		for(int i=0; i < strRow.length(); i++) {
@@ -45,11 +45,22 @@ public class Row {
 				// illegal character
 			}
 			
-			c = new Character( i, rowNum, type);
-			chars.add( c);
+			//p = new Point( i, this, type);
+			points.add( p);
 		}
 	}
 
-	
-
+	void search() {
+		
+		Iterator<Point> iterator = null;
+		Point p = null;
+		
+		iterator = points.iterator();
+			
+		while (iterator.hasNext()) {
+				
+			p = iterator.next();
+			//p.search();
+		}
+	}
 }
