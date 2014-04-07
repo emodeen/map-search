@@ -251,14 +251,13 @@ public class MapFile extends File {
 			System.out.println( "Error reading row");
 		}
 		
-		points = new Point[strLen][numRows];
+		points = new Point[numRows][strLen];
 		
 		Iterator<Point> iterator = pointList.iterator();
 		
-		//BUG: This loop iterates through 13 items, then 32.  Should be reversed.
-		for(int y=0; y < numRows; y++) {
-			for(int z=0; z < strLen; z++) {
-				points[z][y] = iterator.next();
+		for(int y=0; y < points.length; y++) {
+			for(int z=0; z < points[y].length; z++) {
+				points[y][z] = iterator.next();
 			}
 		}
 	}
