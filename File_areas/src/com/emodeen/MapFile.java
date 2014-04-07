@@ -302,20 +302,26 @@ public class MapFile extends File {
 		startPoint.setType( replaceChar);
 		areaSize++;
 		
+		// one step to the west
 		if (xCoord != 0) {
-			floodFill( points[xCoord-1][yCoord], findChar, replaceChar);
+			floodFill( points[yCoord][xCoord-1], findChar, replaceChar);
 		}
 		
-		if (xCoord != (points.length-1)) {
-			floodFill( points[xCoord+1][yCoord], findChar, replaceChar);
+		// one step to the east
+		if (xCoord != (points[yCoord].length-1)) {
+			System.out.println("x coord = " + xCoord);
+			System.out.println("y coord = " + yCoord);
+			floodFill( points[yCoord][xCoord+1], findChar, replaceChar);
 		}
 		
+		// one step to the north
 		if (yCoord != 0) {
-			floodFill( points[xCoord][yCoord-1], findChar, replaceChar);
+			floodFill( points[yCoord-1][xCoord], findChar, replaceChar);
 		}
 		
-		if (yCoord != (points[xCoord].length-1)) {
-			floodFill( points[xCoord][yCoord+1], findChar, replaceChar);
+		// one step to the south
+		if (yCoord != (points.length-1)) {
+			floodFill( points[yCoord+1][xCoord], findChar, replaceChar);
 		}
 		
 		return areaSize;
