@@ -224,7 +224,7 @@ public class MapFile extends File {
 					numRows++;
 					strLen = strRow.length();
 
-					// Iterate through the points in the row, storing them in the points array.
+					// Loop through the points in the row
 					for(int i=0; i < strRow.length(); i++) {
 									
 						if ( strRow.charAt(i) == '.') {
@@ -255,9 +255,10 @@ public class MapFile extends File {
 		
 		Iterator<Point> iterator = pointList.iterator();
 		
-		for(int y=0; y < points.length; y++) {
-			for(int z=0; z < points[y].length; z++) {
-				points[y][z] = iterator.next();
+		//BUG: This loop iterates through 13 items, then 32.  Should be reversed.
+		for(int y=0; y < numRows; y++) {
+			for(int z=0; z < strLen; z++) {
+				points[z][y] = iterator.next();
 			}
 		}
 	}
