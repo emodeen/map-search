@@ -267,7 +267,7 @@ public class MapFile extends File {
 	 */
 	private void setMaxArea() {
 		
-		int tempArea = 0;
+		int areaSize = 0;
 		
 		for(int i=0; i < points.length; i++) {
 			
@@ -275,53 +275,48 @@ public class MapFile extends File {
 				
 				if( points[i][j].getType() == CharType.DOT) {
 					
-					tempArea = floodFill( points[i][j], CharType.DOT, CharType.AMPERSAND);
+					areaSize = floodFill( points[i][j], areaSize);
 					
-					if ( tempArea > maxArea) {
-						this.maxArea = tempArea;
+					if ( areaSize > maxArea) {
+						this.maxArea = areaSize;
 					}
 				}
 			}
 		}
 	}
 	
-	private int floodFill( Point startPoint, CharType findChar, CharType replaceChar) {
+	private int floodFill( Point startPoint, int areaSize) {
 	
-		int areaSize = 0;
 		int xCoord = startPoint.getxCoordinate();
 		int yCoord = startPoint.getyCoordinate();
 		
-		if ( findChar == replaceChar) {
-			return 0;
+		// Do not change the character if it is not a dot.
+		if ( startPoint.getType() == CharType.DOT) {
+			return areaSize;
 		}
 		
-		if ( startPoint.getType() != findChar) {
-			return 0;
-		}
-		
-		startPoint.setType( replaceChar);
+		// Change the character to an ampersand, and increase the size of the current area.
+		startPoint.setType( CharType.AMPERSAND);
 		areaSize++;
 		
 		// one step to the west
 		if (xCoord != 0) {
-			floodFill( points[yCoord][xCoord-1], findChar, replaceChar);
+			floodFill( points[yCoord][xCoord-1], areaSize);
 		}
 		
 		// one step to the east
 		if (xCoord != (points[yCoord].length-1)) {
-			System.out.println("x coord = " + xCoord);
-			System.out.println("y coord = " + yCoord);
-			floodFill( points[yCoord][xCoord+1], findChar, replaceChar);
+			floodFill( points[yCoord][xCoord+1], areaSize);
 		}
 		
 		// one step to the north
 		if (yCoord != 0) {
-			floodFill( points[yCoord-1][xCoord], findChar, replaceChar);
+			floodFill( points[yCoord-1][xCoord], areaSize);
 		}
 		
 		// one step to the south
 		if (yCoord != (points.length-1)) {
-			floodFill( points[yCoord+1][xCoord], findChar, replaceChar);
+			floodFill( points[yCoord+1][xCoord], areaSize);
 		}
 		
 		return areaSize;
