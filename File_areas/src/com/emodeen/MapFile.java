@@ -212,8 +212,12 @@ public class MapFile extends File {
 		int numRows = 0;
 		String strRow = null;
 		int strLen = 0;
-		List<Point> pointList = new ArrayList<Point>();
+		List<Point> pointList = null;
 		CharType type = null;
+		int maxStrLen = 0;
+		
+		// This is a list of lists, one per row in the file.
+		List<List<Point>> masterList = new ArrayList<List<Point>>();
 		
 		try {
 			do {
@@ -221,8 +225,14 @@ public class MapFile extends File {
 				
 				if ((strRow != null) && (!strRow.equals(""))) {
 					
+					pointList = new ArrayList<Point>();
 					numRows++;
+					
 					strLen = strRow.length();
+					
+					if ( strLen > maxStrLen) {
+						maxStrLen = strLen;
+					}
 
 					// Loop through the points in the row
 					for(int i=0; i < strRow.length(); i++) {
@@ -238,6 +248,9 @@ public class MapFile extends File {
 						pointList.add( new Point( i, numRows-1, type));
 					}
 				}
+				
+				masterList.add( pointList);
+				//pointList = null;
 			} 
 			
 			while( strRow != null);
@@ -247,15 +260,32 @@ public class MapFile extends File {
 			System.out.println( "Error reading row");
 		}
 		
-		points = new Point[numRows][strLen];
+		points = new Point[numRows][maxStrLen];
 		
-		Iterator<Point> iterator = pointList.iterator();
+		Iterator<List<Point>> listIterator = masterList.iterator();
 		
+		// Loop through the list of file rows
+		while (listIterator.hasNext()) {
+			
+			List<Point> pointList2 = (List<Point>)listIterator.next();
+			
+			Iterator<Point> iterator2 = pointList2.iterator();
+			
+			// Loop through the Points in each row.
+			while (iterator2.hasNext()) {
+				
+				Point p = (Point) iterator2.next();
+				points[p.getyCoordinate()][p.getxCoordinate()] = p;
+			}
+		}
+		
+		/*
 		for(int y=0; y < points.length; y++) {
 			for(int z=0; z < points[y].length; z++) {
 				points[y][z] = iterator.next();
 			}
 		}
+		*/
 	}
 	
 	/**
@@ -270,10 +300,13 @@ public class MapFile extends File {
 			for(int j=0; j < points[i].length; j++) {
 				
 				areaSize = 0;
-				areaSize = floodFill( points[i][j], areaSize);
+				
+				if (points[i][j] != null) {
+					areaSize = floodFill( points[i][j], areaSize);
 					
-				if ( areaSize > maxArea) {
-					this.maxArea = areaSize;
+					if ( areaSize > maxArea) {
+						this.maxArea = areaSize;
+					}
 				}
 			}
 		}
