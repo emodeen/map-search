@@ -235,10 +235,6 @@ public class MapFile extends File {
 							type = CharType.CAPITAL_X;
 						}
 								
-						else {
-							// illegal character
-						}
-									
 						pointList.add( new Point( i, numRows-1, type));
 					}
 				}
@@ -273,13 +269,10 @@ public class MapFile extends File {
 			
 			for(int j=0; j < points[i].length; j++) {
 				
-				if( points[i][j].getType() == CharType.DOT) {
+				areaSize = floodFill( points[i][j], areaSize);
 					
-					areaSize = floodFill( points[i][j], areaSize);
-					
-					if ( areaSize > maxArea) {
-						this.maxArea = areaSize;
-					}
+				if ( areaSize > maxArea) {
+					this.maxArea = areaSize;
 				}
 			}
 		}
@@ -291,7 +284,7 @@ public class MapFile extends File {
 		int yCoord = startPoint.getyCoordinate();
 		
 		// Do not change the character if it is not a dot.
-		if ( startPoint.getType() == CharType.DOT) {
+		if ( startPoint.getType() != CharType.DOT) {
 			return areaSize;
 		}
 		
@@ -301,22 +294,22 @@ public class MapFile extends File {
 		
 		// one step to the west
 		if (xCoord != 0) {
-			floodFill( points[yCoord][xCoord-1], areaSize);
+			areaSize = floodFill( points[yCoord][xCoord-1], areaSize);
 		}
 		
 		// one step to the east
 		if (xCoord != (points[yCoord].length-1)) {
-			floodFill( points[yCoord][xCoord+1], areaSize);
+			areaSize = floodFill( points[yCoord][xCoord+1], areaSize);
 		}
 		
 		// one step to the north
 		if (yCoord != 0) {
-			floodFill( points[yCoord-1][xCoord], areaSize);
+			areaSize = floodFill( points[yCoord-1][xCoord], areaSize);
 		}
 		
 		// one step to the south
 		if (yCoord != (points.length-1)) {
-			floodFill( points[yCoord+1][xCoord], areaSize);
+			areaSize = floodFill( points[yCoord+1][xCoord], areaSize);
 		}
 		
 		return areaSize;
