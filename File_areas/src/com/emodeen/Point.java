@@ -75,6 +75,7 @@ public class Point {
 		this.xCoordinate = xCoordinate;
 		this.yCoordinate = yCoordinate;
 		this.type = type;
+		this.visited = false;
 	}
 
 

@@ -269,6 +269,7 @@ public class MapFile extends File {
 			
 			for(int j=0; j < points[i].length; j++) {
 				
+				areaSize = 0;
 				areaSize = floodFill( points[i][j], areaSize);
 					
 				if ( areaSize > maxArea) {
@@ -288,8 +289,14 @@ public class MapFile extends File {
 			return areaSize;
 		}
 		
+		// Check if this point has been visited.
+		if ( startPoint.isVisited()) {
+			return areaSize;
+		}
+		
 		// Change the character to an ampersand, and increase the size of the current area.
 		startPoint.setType( CharType.AMPERSAND);
+		startPoint.setVisited( true);
 		areaSize++;
 		
 		// one step to the west
