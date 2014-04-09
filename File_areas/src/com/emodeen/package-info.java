@@ -2,7 +2,7 @@
  * 
  */
 /**
- * @author Eric
+ * @author Eric Modeen
  *
  */
 package com.emodeen;
