@@ -15,13 +15,14 @@ import java.util.*;
  */
 public class MapFile extends File {
 	
+	private static final long serialVersionUID = 1L;
 	private Point[][] points;
 	private BufferedReader input;
-	int rootNode = 0;
 	private int maxArea;
 	
 	/**
-	 * @param pathname
+	 * A constructor that creates a new MapFile object based on the pathname.
+	 * @param pathname The path to the file.
 	 */
 	public MapFile( String path) {
 
@@ -29,7 +30,7 @@ public class MapFile extends File {
 	}
 
 	/**
-	 * @param args
+	 * @param args Pass in the path to the file as the first argument (args[0]) when running the class.
 	 */
 	public static void main(String[] args) {
 		
@@ -37,7 +38,7 @@ public class MapFile extends File {
 		
 		file.open();
 		
-		file.loadPointsArray();
+		file.readFile();
 		
 		file.setMaxArea();
 		
@@ -47,8 +48,9 @@ public class MapFile extends File {
 	}
 	
 	/**
+	 * This method traverses the file rows, and stores the rows in a list of Lists.
 	 */
-	private void loadPointsArray()
+	private void readFile()
 	{
 		int numRows = 0;
 		String strRow = null;
@@ -91,7 +93,6 @@ public class MapFile extends File {
 				}
 				
 				masterList.add( pointList);
-				//pointList = null;
 			} 
 			
 			while( strRow != null);
@@ -101,6 +102,17 @@ public class MapFile extends File {
 			System.out.println( "Error reading row");
 		}
 		
+		loadPointsArray(masterList, maxStrLen, numRows);
+	}
+	
+	/**
+	 * This method loads the file characters stored in the List objects into a 2-dimensional array.
+	 * @param masterList This is a list of lists, with one list for each row in the file.
+	 * @param maxStrLen This is the length of the longest row in the file.
+	 * @param numRows The number of rows in the file.
+	 */
+	private void loadPointsArray(List<List<Point>> masterList, int maxStrLen, int numRows) {
+	
 		points = new Point[numRows][maxStrLen];
 		
 		Iterator<List<Point>> listIterator = masterList.iterator();
@@ -122,6 +134,7 @@ public class MapFile extends File {
 	}
 	
 	/**
+	 * This method loops through the 2D array of points to find the largest area in the file. 
 	 */
 	private void setMaxArea() {
 		
@@ -144,6 +157,13 @@ public class MapFile extends File {
 		}
 	}
 	
+	/**
+	 * This method is based on the standard floodFill algorithm.  It takes the starting point that is passed in, and changes it to the replacement character if needed.
+	 * Then the method recursively inspects the points to the north, south, east, and west until no more dot characters can be found.
+	 * @param startPoint A Point object representing the starting point to inspect.
+	 * @param areaSize The size of the current area being examined in the file.  It is a count for the recursive function calls.
+	 * This size in incremented each time another character replacement is made.  
+	 */
 	private int floodFill( Point startPoint, int areaSize) {
 	
 		int xCoord = startPoint.getxCoordinate();
@@ -187,6 +207,9 @@ public class MapFile extends File {
 		return areaSize;
 	}
 	
+	/**
+	 * Print the largest area in the file to the console.
+	 */
 	private void printMaxArea() {
 		
 		StringBuffer strBuf = new StringBuffer("The largest area in the file is ").append(this.maxArea);
