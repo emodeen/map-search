@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.*;
 import java.util.*;
 
 /**
@@ -36,15 +37,18 @@ public class MapFile extends File {
 		
 		MapFile file = new MapFile( args[0]);
 		
-		file.open();
-		
-		file.readFile();
-		
-		file.setMaxArea();
-		
-		file.printMaxArea();
-		
-		file.close();
+		if ( file.fileOK()) {
+			
+			file.open();
+			
+			file.readFile();
+			
+			file.setMaxArea();
+			
+			file.printMaxArea();
+			
+			file.close();
+		}
 	}
 	
 	/**
@@ -162,6 +166,7 @@ public class MapFile extends File {
 	 * Then the method recursively inspects the points to the north, south, east, and west until no more dot characters can be found.
 	 * @param startPoint A Point object representing the starting point to inspect.
 	 * @param areaSize The size of the current area being examined in the file.  It is a count for the recursive function calls.
+	 * @return Returns an integer that represents the size of the area connected to the starting point that is passed in.
 	 * This size in incremented each time another character replacement is made.  
 	 */
 	private int floodFill( Point startPoint, int areaSize) {
@@ -215,6 +220,41 @@ public class MapFile extends File {
 		StringBuffer strBuf = new StringBuffer("The largest area in the file is ").append(this.maxArea);
 		
 		System.out.println( strBuf.toString());
+	}
+	
+	/**
+	 * 
+	 * @return This method returns true if the file is a regular file and it can be read.
+	 */
+	private boolean fileOK() {
+		
+		boolean fileOK = false;
+		boolean readable = false;
+		boolean regular = false;
+		
+		Path path = Paths.get(this.getAbsolutePath());
+		
+		if ( Files.isRegularFile(path)) {
+			regular = true;
+		}
+		
+		else {
+			System.out.println("The specified file does not exist, is not a regular file, or it cannot be determined if the file is a regular file or not.");
+		}
+		
+		if ( Files.isReadable(path)) {
+			readable = true;
+		}
+		
+		else {
+			System.out.println("The specified file is not readable.");
+		}
+		
+		if ( regular && readable) {
+			fileOK = true;
+		}
+		
+		return fileOK;
 	}
 	
 	
