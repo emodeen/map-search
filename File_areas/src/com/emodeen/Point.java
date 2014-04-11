@@ -4,7 +4,8 @@
 package com.emodeen;
 
 /**
- * @author Eric
+ * @author Eric Modeen
+ * This class encapsulates the attributes for a point on the graph.
  *
  */
 public class Point {
@@ -13,7 +14,7 @@ public class Point {
 	private int yCoordinate;
 	private CharType type;
 
-	// Whether the point has been visited during the BFS.
+	// Whether the point was visited while searching the graph.
 	private boolean visited;
 	
 	/**

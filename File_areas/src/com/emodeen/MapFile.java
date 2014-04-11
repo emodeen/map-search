@@ -12,6 +12,8 @@ import java.util.*;
 
 /**
  * @author Eric Modeen
+ * This class represents a file containing a map of "." and "X" characters.  This is the main class to run for finding the largest area in the graph.
+ * The largest area is defined as the number of adjacent "." characters that are bounded by "X" characters.
  *
  */
 public class MapFile extends File {
@@ -217,7 +219,7 @@ public class MapFile extends File {
 	 */
 	private void printMaxArea() {
 		
-		StringBuffer strBuf = new StringBuffer("The largest area in the file is ").append(this.maxArea);
+		StringBuffer strBuf = new StringBuffer("The largest area in the file is ").append(this.maxArea).append(".");
 		
 		System.out.println( strBuf.toString());
 	}
