@@ -1,7 +1,7 @@
 Map-search
 ==========
 
-MapFile is a program that finds the largest area in a graph.  
+Map-search is a Java program that finds the largest area in a graph.  
 
 Running the program:
 
